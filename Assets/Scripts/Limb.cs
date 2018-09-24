@@ -13,6 +13,7 @@ public class Limb : MonoBehaviour {
     [Header("Joints")]
     public Vector2 selfJoint;
     public Vector2 childJoint;
+    public float startRotation;
 
     [Header("Child Limb")]
     public Limb child;
@@ -23,6 +24,7 @@ public class Limb : MonoBehaviour {
 
     private void Start() {
         if (child) child.Translate(childJoint);
+        Rotate(startRotation);
     }
 
     private void DrawMesh() {
