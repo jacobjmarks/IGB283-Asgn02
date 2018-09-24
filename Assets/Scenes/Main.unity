@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 290684295}
+  - component: {fileID: 290684296}
   m_Layer: 0
   m_Name: Lower Arm
   m_TagString: Untagged
@@ -141,6 +142,24 @@ Transform:
   m_Father: {fileID: 851958976}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &290684296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 290684294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 080080cc28bbf9d42bd2fd3e5073f8b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 0.25
+  height: 1
+  material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  color: {r: 0, g: 0.61685514, b: 1, a: 1}
+  selfJoint: {x: 0.1125, y: 0}
+  childJoint: {x: 0.1125, y: 1}
+  child: {fileID: 628939848}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,6 +245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 628939847}
+  - component: {fileID: 628939848}
   m_Layer: 0
   m_Name: Wrist
   m_TagString: Untagged
@@ -246,6 +266,24 @@ Transform:
   m_Father: {fileID: 851958976}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &628939848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 628939846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 080080cc28bbf9d42bd2fd3e5073f8b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 0.25
+  height: 0.5
+  material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  color: {r: 0, g: 0.61685514, b: 1, a: 1}
+  selfJoint: {x: 0.1125, y: 0}
+  childJoint: {x: 0.1125, y: 0.5}
+  child: {fileID: 0}
 --- !u!1 &766675395
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,10 +327,10 @@ MonoBehaviour:
   width: 1
   height: 0.25
   material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.620383, b: 1, a: 1}
+  color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.5, y: 0}
-  childJoint: {x: 0, y: 0}
-  child: {fileID: 0}
+  childJoint: {x: 0.5, y: 0.25}
+  child: {fileID: 1504910869}
 --- !u!1 &851958975
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1504910868}
+  - component: {fileID: 1504910869}
   m_Layer: 0
   m_Name: Upper Arm
   m_TagString: Untagged
@@ -353,3 +392,21 @@ Transform:
   m_Father: {fileID: 851958976}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1504910869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1504910867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 080080cc28bbf9d42bd2fd3e5073f8b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 0.25
+  height: 1
+  material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  color: {r: 0, g: 0.61685514, b: 1, a: 1}
+  selfJoint: {x: 0.1125, y: 0}
+  childJoint: {x: 0.1125, y: 1}
+  child: {fileID: 290684296}

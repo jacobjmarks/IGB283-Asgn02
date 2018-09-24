@@ -16,17 +16,13 @@ public class Limb : MonoBehaviour {
 
     [Header("Child Limb")]
     public Limb child;
-
+    
     private void Awake() {
         DrawMesh();
     }
 
     private void Start() {
-        //if (child) child.transform.position = 
-    }
-
-    private void Update() {
-        Rotate(5 * Time.deltaTime);
+        if (child) child.Translate(childJoint);
     }
 
     private void DrawMesh() {
@@ -46,6 +42,9 @@ public class Limb : MonoBehaviour {
             vertices[i] -= (Vector3)selfJoint;
         }
 
+        childJoint -= selfJoint;
+        selfJoint -= selfJoint;
+
         mesh.vertices = vertices;
 
         mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
@@ -54,8 +53,19 @@ public class Limb : MonoBehaviour {
         mesh.RecalculateBounds();
     }
 
+    private void Translate(Vector3 offset) {
+        transform.position += offset;
+
+        if (child) child.Translate(offset);
+    }
+
     private void Rotate(float angle) {
         transform.Rotate(Vector3.forward, angle);
+
+        if (child) {
+            child.Translate(-child.transform.position + transform.position + transform.up * height);
+            child.Rotate(angle);
+        }
     }
 
 }
