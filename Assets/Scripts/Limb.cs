@@ -14,8 +14,19 @@ public class Limb : MonoBehaviour {
     public Vector2 selfJoint;
     public Vector2 childJoint;
 
+    [Header("Child Limb")]
+    public Limb child;
+
     private void Awake() {
         DrawMesh();
+    }
+
+    private void Start() {
+        //if (child) child.transform.position = 
+    }
+
+    private void Update() {
+        Rotate(5 * Time.deltaTime);
     }
 
     private void DrawMesh() {
@@ -23,17 +34,28 @@ public class Limb : MonoBehaviour {
         Mesh mesh = gameObject.AddComponent<MeshFilter>().mesh;
         mesh.Clear();
 
-        mesh.vertices = new Vector3[] {
+        Vector3[] vertices = new Vector3[] {
             new Vector3(0, 0),
             new Vector3(0, height),
             new Vector3(width, height),
             new Vector3(width, 0)
         };
 
+        // Offset by joint
+        for (int i = 0; i < vertices.Length; i++) {
+            vertices[i] -= (Vector3)selfJoint;
+        }
+
+        mesh.vertices = vertices;
+
         mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
         mesh.colors = new Color[] { color, color, color, color };
 
         mesh.RecalculateBounds();
+    }
+
+    private void Rotate(float angle) {
+        transform.Rotate(Vector3.forward, angle);
     }
 
 }
