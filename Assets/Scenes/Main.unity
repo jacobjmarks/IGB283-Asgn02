@@ -481,7 +481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpHeight: 1
-  jumpDistance: 1
+  jumpDistance: 1.5
   moveLeft: 276
   moveRight: 275
   jumpInPlace: 273

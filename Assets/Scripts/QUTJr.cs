@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class QUTJr : MonoBehaviour {
 
-    private enum Moving { LEFT = -1, RIGHT = 1 };
+    private enum Facing { LEFT = -1, RIGHT = 1 };
     private enum Jumping { INPLACE, FORWARD };
 
+    [Header("Configuration")]
     public float moveSpeed;
     public float jumpHeight;
     public float jumpDistance;
-    private bool jumping = false;
+    public bool continuousMovement;
 
     [Header("Controls")]
     public KeyCode moveLeft;
@@ -23,18 +24,28 @@ public class QUTJr : MonoBehaviour {
 
     private Limb baseLimb;
 
+    private Facing direction = Facing.LEFT;
+    private bool jumping = false;
+
     private void Start() {
         baseLimb = transform.Find("Base").GetComponent<Limb>();
     }
 
     private void Update() {
         UserInput();
+        if (continuousMovement) MoveForward();
     }
 
     private void UserInput() {
-        if (Input.GetKey(moveLeft)) Move(Moving.LEFT);
+        if (Input.GetKey(moveLeft)) {
+            direction = Facing.LEFT;
+            if (!continuousMovement) MoveForward();
+        }
 
-        if (Input.GetKey(moveRight)) Move(Moving.RIGHT);
+        if (Input.GetKey(moveRight)) {
+            direction = Facing.RIGHT;
+            if (!continuousMovement) MoveForward();
+        }
 
         if (Input.GetKey(jumpInPlace) && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
 
@@ -43,7 +54,7 @@ public class QUTJr : MonoBehaviour {
         if (Input.GetKey(collapse)) ;
     }
 
-    private void Move(Moving direction) {
+    private void MoveForward() {
         //baseLimb.Scale(new Vector3((int)direction, 1, 1));
         baseLimb.Translate(new Vector3(moveSpeed * (int)direction * Time.deltaTime, 0, 0));
     }
@@ -60,8 +71,7 @@ public class QUTJr : MonoBehaviour {
 
         // Ascend
         while (!heightReached || !distanceReached) {
-            baseLimb.Translate(Vector3.up * Time.deltaTime);
-            Debug.Log(baseLimb.transform.position.y / targetHeight);
+            if (!heightReached) baseLimb.Translate(Vector3.up * Time.deltaTime);
             if (!distanceReached) baseLimb.Translate(Vector3.right * Time.deltaTime);
             yield return null;
 
