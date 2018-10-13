@@ -24,8 +24,20 @@ public class QUTJr : MonoBehaviour {
 
     private Limb baseLimb;
 
-    private Facing direction = Facing.LEFT;
     private bool jumping = false;
+
+    private Facing _direction = Facing.LEFT;
+    private Facing direction {
+        get {
+            return _direction;
+        }
+        set {
+            if (value != direction) {
+                baseLimb.Flip();
+                _direction = value;
+            }
+        }
+    }
 
     private void Start() {
         baseLimb = transform.Find("Base").GetComponent<Limb>();
@@ -55,7 +67,6 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void MoveForward() {
-        //baseLimb.Scale(new Vector3((int)direction, 1, 1));
         baseLimb.Translate(new Vector3(moveSpeed * (int)direction * Time.deltaTime, 0, 0));
     }
 
@@ -63,20 +74,23 @@ public class QUTJr : MonoBehaviour {
         jumping = true;
 
         float targetHeight = baseLimb.transform.position.y + jumpHeight;
-        float targetDistance = baseLimb.transform.position.x + jumpDistance;
+        float targetDistance = baseLimb.transform.position.x + jumpDistance * (int)direction;
 
         bool heightReached = false;
         bool distanceReached = (type == Jumping.INPLACE) ? true : false;
-        Debug.Log(distanceReached);
 
         // Ascend
         while (!heightReached || !distanceReached) {
             if (!heightReached) baseLimb.Translate(Vector3.up * Time.deltaTime);
-            if (!distanceReached) baseLimb.Translate(Vector3.right * Time.deltaTime);
+            if (!distanceReached) baseLimb.Translate(Vector3.right * (int)direction * Time.deltaTime);
             yield return null;
 
-            if (baseLimb.transform.position.y >= targetHeight) heightReached = true;
-            if (baseLimb.transform.position.x >= targetDistance) distanceReached = true;
+            heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
+            // Not-so-graceful distance check
+            distanceReached = distanceReached || Vector2.Distance(
+                new Vector2(baseLimb.transform.position.x, 0),
+                new Vector2(targetDistance, 0)
+            ) <= 0.05;
 
             if (heightReached && distanceReached) {
                 // Descend

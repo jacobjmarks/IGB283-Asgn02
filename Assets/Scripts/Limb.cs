@@ -40,6 +40,11 @@ public class Limb : MonoBehaviour {
         }
     }
 
+    public void Flip() {
+        transform.RotateAround(new Vector2(GameObject.Find("Base").transform.position.x, transform.position.y), Vector3.up, 180);
+        if (child) child.Flip();
+    }
+
     //public void Scale(Vector3 scale) {
     //    transform.localScale = scale;
 
