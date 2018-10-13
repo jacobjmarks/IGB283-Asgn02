@@ -20,12 +20,31 @@ public class Limb : MonoBehaviour {
     
     private void Awake() {
         DrawMesh();
-    }
 
-    private void Start() {
         if (child) child.Translate(childJoint);
         Rotate(startRotation);
     }
+
+    public void Translate(Vector3 offset) {
+        transform.position += offset;
+
+        if (child) child.Translate(offset);
+    }
+
+    public void Rotate(float angle) {
+        transform.Rotate(Vector3.forward, angle);
+
+        if (child) {
+            child.Translate(-child.transform.position + transform.position + transform.up * height);
+            child.Rotate(angle);
+        }
+    }
+
+    //public void Scale(Vector3 scale) {
+    //    transform.localScale = scale;
+
+    //    if (child) child.Scale(scale);
+    //}
 
     private void DrawMesh() {
         gameObject.AddComponent<MeshRenderer>().material = material;
@@ -53,21 +72,6 @@ public class Limb : MonoBehaviour {
         mesh.colors = new Color[] { color, color, color, color };
 
         mesh.RecalculateBounds();
-    }
-
-    private void Translate(Vector3 offset) {
-        transform.position += offset;
-
-        if (child) child.Translate(offset);
-    }
-
-    private void Rotate(float angle) {
-        transform.Rotate(Vector3.forward, angle);
-
-        if (child) {
-            child.Translate(-child.transform.position + transform.position + transform.up * height);
-            child.Rotate(angle);
-        }
     }
 
 }
