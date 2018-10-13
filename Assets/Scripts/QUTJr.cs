@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 public class QUTJr : MonoBehaviour {
@@ -9,6 +11,8 @@ public class QUTJr : MonoBehaviour {
 
     public float moveSpeed;
     public float jumpHeight;
+    public float jumpDistance;
+    private bool jumping = false;
 
     [Header("Controls")]
     public KeyCode moveLeft;
@@ -32,9 +36,9 @@ public class QUTJr : MonoBehaviour {
 
         if (Input.GetKey(moveRight)) Move(Moving.RIGHT);
 
-        if (Input.GetKey(jumpInPlace)) Jump(Jumping.INPLACE);
+        if (Input.GetKey(jumpInPlace) && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
 
-        if (Input.GetKey(jumpForward)) Jump(Jumping.FORWARD);
+        if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
 
         if (Input.GetKey(collapse)) ;
     }
@@ -44,8 +48,37 @@ public class QUTJr : MonoBehaviour {
         baseLimb.Translate(new Vector3(moveSpeed * (int)direction * Time.deltaTime, 0, 0));
     }
 
-    private void Jump(Jumping type) {
+    private IEnumerator Jump(Jumping type) {
+        jumping = true;
 
+        float targetHeight = baseLimb.transform.position.y + jumpHeight;
+        float targetDistance = baseLimb.transform.position.x + jumpDistance;
+
+        bool heightReached = false;
+        bool distanceReached = (type == Jumping.INPLACE) ? true : false;
+        Debug.Log(distanceReached);
+
+        // Ascend
+        while (!heightReached || !distanceReached) {
+            baseLimb.Translate(Vector3.up * Time.deltaTime);
+            Debug.Log(baseLimb.transform.position.y / targetHeight);
+            if (!distanceReached) baseLimb.Translate(Vector3.right * Time.deltaTime);
+            yield return null;
+
+            if (baseLimb.transform.position.y >= targetHeight) heightReached = true;
+            if (baseLimb.transform.position.x >= targetDistance) distanceReached = true;
+
+            if (heightReached && distanceReached) {
+                // Descend
+                while (baseLimb.transform.position.y > 0) {
+                    baseLimb.Translate(Vector3.down * 1.81f * Time.deltaTime);
+                    yield return null;
+                }
+                // Clamp to 0
+                baseLimb.transform.position.Set(transform.position.x, 0, transform.position.z);
+                jumping = false;
+            }
+        }
     }
 
 }
