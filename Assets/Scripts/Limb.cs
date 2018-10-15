@@ -15,6 +15,9 @@ public class Limb : MonoBehaviour {
     public Vector2 childJoint;
     public float startRotation;
 
+    [Header("Collapse")]
+    public float collapseAngle = 90;
+
     [Header("Child Limb")]
     public Limb child;
     
@@ -45,11 +48,15 @@ public class Limb : MonoBehaviour {
         if (child) child.Flip();
     }
 
-    //public void Scale(Vector3 scale) {
-    //    transform.localScale = scale;
+    public IEnumerator Collapse(float speed) {
+        if (child) StartCoroutine(child.Collapse(speed/2));
 
-    //    if (child) child.Scale(scale);
-    //}
+        while (Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle) > 0.1) {
+            Rotate(speed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
 
     private void DrawMesh() {
         gameObject.AddComponent<MeshRenderer>().material = material;

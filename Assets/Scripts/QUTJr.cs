@@ -34,6 +34,10 @@ public class QUTJr : MonoBehaviour {
     public KeyCode jumpForward;
     public KeyCode collapse;
 
+    [Header("Collapse/Rise")]
+    public float collapseSpeed = 15;
+    public float riseSpeed = 10;
+
     private Limb baseLimb;
 
     private Facing _direction = Facing.LEFT;
@@ -85,7 +89,7 @@ public class QUTJr : MonoBehaviour {
 
         if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
 
-        if (Input.GetKey(collapse)) ;
+        if (Input.GetKey(collapse)) Collapse();
     }
 
     private void MoveForward() {
@@ -147,4 +151,7 @@ public class QUTJr : MonoBehaviour {
         }
     }
 
+    private void Collapse() {
+        StartCoroutine(baseLimb.Collapse(collapseSpeed));
+    }
 }

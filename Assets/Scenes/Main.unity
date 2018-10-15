@@ -261,6 +261,7 @@ MonoBehaviour:
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
   startRotation: 45
+  collapseAngle: 90
   child: {fileID: 628939848}
 --- !u!1 &519420028
 GameObject:
@@ -386,6 +387,7 @@ MonoBehaviour:
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 0.5}
   startRotation: 45
+  collapseAngle: 90
   child: {fileID: 0}
 --- !u!1 &766675395
 GameObject:
@@ -434,6 +436,7 @@ MonoBehaviour:
   selfJoint: {x: 0.5, y: 0}
   childJoint: {x: 0.5, y: 0.25}
   startRotation: 0
+  collapseAngle: 0
   child: {fileID: 1504910869}
 --- !u!1 &851958975
 GameObject:
@@ -480,17 +483,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
+  continuousMovement: 0
+  xFrom: -5
+  xTo: 5
   jumpHeight: 1
   jumpDistance: 2
   ascendSpeed: 5
   descendSpeed: 3
   avgAirspeedVelocity: 6
-  continuousMovement: 0
   moveLeft: 276
   moveRight: 275
   jumpInPlace: 273
   jumpForward: 274
-  collapse: 0
+  collapse: 279
+  collapseSpeed: 5
 --- !u!1 &1504910867
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,4 +544,5 @@ MonoBehaviour:
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
   startRotation: 0
+  collapseAngle: 45
   child: {fileID: 290684296}
