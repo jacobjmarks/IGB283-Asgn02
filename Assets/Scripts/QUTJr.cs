@@ -9,14 +9,23 @@ public class QUTJr : MonoBehaviour {
     private enum Facing { LEFT = -1, RIGHT = 1 };
     private enum Jumping { INPLACE, FORWARD };
 
-    [Header("Configuration")]
+    [Header("Movement")]
     public float moveSpeed = 5;
+    public bool continuousMovement;
+
+    [Header("Movement Bounds")]
+    public float xFrom = -5;
+    public float xTo = 5;
+    private bool outOfBoundsFrom = false;
+    private bool outOfBoundsTo = false;
+
+    [Header("Jumping")]
     public float jumpHeight = 1;
     public float jumpDistance = 1.5f;
     public float ascendSpeed = 5;
     public float descendSpeed = 3;
     public float avgAirspeedVelocity = 3;
-    public bool continuousMovement;
+    private bool jumping = false;
 
     [Header("Controls")]
     public KeyCode moveLeft;
@@ -26,8 +35,6 @@ public class QUTJr : MonoBehaviour {
     public KeyCode collapse;
 
     private Limb baseLimb;
-
-    private bool jumping = false;
 
     private Facing _direction = Facing.LEFT;
     private Facing direction {
@@ -47,6 +54,7 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void Update() {
+        BoundsCheck();
         UserInput();
         if (continuousMovement && !jumping) MoveForward();
     }
@@ -58,12 +66,12 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void UserInput() {
-        if (Input.GetKey(moveLeft) && !jumping) {
+        if (Input.GetKey(moveLeft) && !jumping && !outOfBoundsFrom) {
             direction = Facing.LEFT;
             if (!continuousMovement) MoveForward();
         }
 
-        if (Input.GetKey(moveRight) && !jumping) {
+        if (Input.GetKey(moveRight) && !jumping && !outOfBoundsTo) {
             direction = Facing.RIGHT;
             if (!continuousMovement) MoveForward();
         }
@@ -80,6 +88,7 @@ public class QUTJr : MonoBehaviour {
     }
 
     private IEnumerator Jump(Jumping type) {
+        if ((direction == Facing.LEFT && outOfBoundsFrom) || (direction == Facing.RIGHT && outOfBoundsTo)) yield break;
         jumping = true;
 
         float targetHeight = baseLimb.transform.position.y + jumpHeight;
@@ -94,23 +103,42 @@ public class QUTJr : MonoBehaviour {
             if (!distanceReached) baseLimb.Translate(Vector3.right * avgAirspeedVelocity * (int)direction * Time.deltaTime);
             yield return null;
 
+            // Alter jump conditions based on bounds check
+            heightReached = heightReached || (direction == Facing.LEFT) ? outOfBoundsFrom : outOfBoundsTo;
+            distanceReached = distanceReached || (direction == Facing.LEFT) ? outOfBoundsFrom : outOfBoundsTo;
+
+            // Alter jump conditions based on target height/distance
             heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
-            // Not-so-graceful distance check
             distanceReached = distanceReached || Vector2.Distance(
                 new Vector2(baseLimb.transform.position.x, 0),
                 new Vector2(targetDistance, 0)
-            ) <= 0.05;
+            ) <= 0.05; // Not-so-graceful distance check
+        }
 
-            if (heightReached && distanceReached) {
-                // Descend
-                while (baseLimb.transform.position.y > 0) {
-                    baseLimb.Translate(Vector3.down * descendSpeed * Time.deltaTime);
-                    yield return null;
-                }
-                // Clamp to 0
-                baseLimb.transform.position.Set(transform.position.x, 0, transform.position.z);
-                jumping = false;
-            }
+        // Descend
+        while (baseLimb.transform.position.y > 0) {
+            baseLimb.Translate(Vector3.down * descendSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Clamp to 0
+        baseLimb.transform.position.Set(transform.position.x, 0, transform.position.z);
+        jumping = false;
+    }
+
+    private void BoundsCheck() {
+        if (baseLimb.transform.position.x <= xFrom) {
+            outOfBoundsFrom = true;
+            if (continuousMovement && !jumping) direction = Facing.RIGHT;
+        } else {
+            outOfBoundsFrom = false;
+        }
+
+        if (baseLimb.transform.position.x >= xTo) {
+            outOfBoundsTo = true;
+            if (continuousMovement && !jumping) direction = Facing.LEFT;
+        } else {
+            outOfBoundsTo = false;
         }
     }
 
