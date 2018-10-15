@@ -14,14 +14,15 @@ public class Limb : MonoBehaviour {
     public Vector2 selfJoint;
     public Vector2 childJoint;
     public float localStartAngle;
-    public float startAngle;
+    private float startAngle;
 
     [Header("Collapse")]
     public float collapseAngle = 90;
     [HideInInspector]
     public bool collapsed = false;
 
-    [Header("Child Limb")]
+    [Header("Tree")]
+    public Limb parent;
     public Limb child;
     
     private void Awake() {
@@ -54,14 +55,14 @@ public class Limb : MonoBehaviour {
 
     public IEnumerator Collapse(float speed) {
         if (collapsed) yield break;
-
-        if (child) StartCoroutine(child.Collapse(speed / 2));
-
-        while (Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle) > 0.05) {
-            Rotate(speed * Time.deltaTime);
+        
+        float dist;
+        while ((dist = Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle)) > 0.05) {
+            Rotate(Mathf.Min(dist, speed * Time.deltaTime));
             yield return null;
         }
 
+        if (child) StartCoroutine(child.Collapse(speed));
         if (child) yield return new WaitUntil(() => child.collapsed);
         collapsed = true;
     }
@@ -69,13 +70,13 @@ public class Limb : MonoBehaviour {
     public IEnumerator Rise(float speed) {
         if (!collapsed) yield break;
 
-        if (child) StartCoroutine(child.Rise(speed / 2));
-
-        while (Mathf.DeltaAngle(startAngle, transform.eulerAngles.z) > 0.05) {
-            Rotate(-speed * Time.deltaTime);
+        float dist;
+        while ((dist = Mathf.DeltaAngle(startAngle, transform.eulerAngles.z)) > 0.05) {
+            Rotate(Mathf.Max(-dist, -speed * Time.deltaTime));
             yield return null;
         }
 
+        if (child) StartCoroutine(child.Rise(speed));
         if (child) yield return new WaitUntil(() => !child.collapsed);
         collapsed = false;
     }

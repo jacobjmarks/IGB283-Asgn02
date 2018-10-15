@@ -260,9 +260,11 @@ MonoBehaviour:
   color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
-  startRotation: 45
+  localStartAngle: 45
+  startAngle: 0
   collapseAngle: 90
   collapsed: 0
+  parent: {fileID: 1504910869}
   child: {fileID: 628939848}
 --- !u!1 &519420028
 GameObject:
@@ -387,9 +389,11 @@ MonoBehaviour:
   color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 0.5}
-  startRotation: 45
-  collapseAngle: 90
+  localStartAngle: 45
+  startAngle: 0
+  collapseAngle: 180
   collapsed: 0
+  parent: {fileID: 290684296}
   child: {fileID: 0}
 --- !u!1 &766675395
 GameObject:
@@ -437,9 +441,11 @@ MonoBehaviour:
   color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.5, y: 0}
   childJoint: {x: 0.5, y: 0.25}
-  startRotation: 0
+  localStartAngle: 0
+  startAngle: 0
   collapseAngle: 0
   collapsed: 0
+  parent: {fileID: 0}
   child: {fileID: 1504910869}
 --- !u!1 &851958975
 GameObject:
@@ -549,7 +555,9 @@ MonoBehaviour:
   color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
-  startRotation: 0
+  localStartAngle: 0
+  startAngle: 0
   collapseAngle: 45
   collapsed: 0
+  parent: {fileID: 766675397}
   child: {fileID: 290684296}
