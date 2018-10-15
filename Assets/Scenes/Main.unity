@@ -479,11 +479,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be856054ca83c654e99834d6b82a237c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 4
   jumpHeight: 1
-  jumpDistance: 1.5
+  jumpDistance: 2
   ascendSpeed: 5
   descendSpeed: 3
+  avgAirspeedVelocity: 6
   continuousMovement: 0
   moveLeft: 276
   moveRight: 275

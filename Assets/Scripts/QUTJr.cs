@@ -15,6 +15,7 @@ public class QUTJr : MonoBehaviour {
     public float jumpDistance = 1.5f;
     public float ascendSpeed = 5;
     public float descendSpeed = 3;
+    public float avgAirspeedVelocity = 3;
     public bool continuousMovement;
 
     [Header("Controls")]
@@ -47,7 +48,13 @@ public class QUTJr : MonoBehaviour {
 
     private void Update() {
         UserInput();
-        if (continuousMovement) MoveForward();
+        if (continuousMovement && !jumping) MoveForward();
+    }
+
+    private void OnValidate() {
+        while (ascendSpeed < 1) ascendSpeed++;
+        while (descendSpeed < 1) descendSpeed++;
+        while (avgAirspeedVelocity < 1) avgAirspeedVelocity++;
     }
 
     private void UserInput() {
@@ -73,7 +80,6 @@ public class QUTJr : MonoBehaviour {
     }
 
     private IEnumerator Jump(Jumping type) {
-        if (ascendSpeed == 0 || descendSpeed == 0) yield break;
         jumping = true;
 
         float targetHeight = baseLimb.transform.position.y + jumpHeight;
@@ -85,7 +91,7 @@ public class QUTJr : MonoBehaviour {
         // Ascend
         while (!heightReached || !distanceReached) {
             if (!heightReached) baseLimb.Translate(Vector3.up * ascendSpeed * Time.deltaTime);
-            if (!distanceReached) baseLimb.Translate(Vector3.right * ascendSpeed * (int)direction * Time.deltaTime);
+            if (!distanceReached) baseLimb.Translate(Vector3.right * avgAirspeedVelocity * (int)direction * Time.deltaTime);
             yield return null;
 
             heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
