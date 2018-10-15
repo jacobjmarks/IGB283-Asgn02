@@ -17,6 +17,8 @@ public class Limb : MonoBehaviour {
 
     [Header("Collapse")]
     public float collapseAngle = 90;
+    [HideInInspector]
+    public bool collapsed = false;
 
     [Header("Child Limb")]
     public Limb child;
@@ -55,6 +57,9 @@ public class Limb : MonoBehaviour {
             Rotate(speed * Time.deltaTime);
             yield return null;
         }
+
+        if (child) yield return new WaitUntil(() => child.collapsed);
+        collapsed = true;
     }
 
 

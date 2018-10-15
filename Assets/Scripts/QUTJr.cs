@@ -37,6 +37,8 @@ public class QUTJr : MonoBehaviour {
     [Header("Collapse/Rise")]
     public float collapseSpeed = 15;
     public float riseSpeed = 10;
+    private bool collapsing = false;
+    private bool collapsed = false;
 
     private Limb baseLimb;
 
@@ -89,7 +91,7 @@ public class QUTJr : MonoBehaviour {
 
         if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
 
-        if (Input.GetKey(collapse)) Collapse();
+        if (Input.GetKey(collapse)) StartCoroutine(Collapse());
     }
 
     private void MoveForward() {
@@ -151,7 +153,13 @@ public class QUTJr : MonoBehaviour {
         }
     }
 
-    private void Collapse() {
+    private IEnumerator Collapse() {
+        collapsing = true;
+
         StartCoroutine(baseLimb.Collapse(collapseSpeed));
+        yield return new WaitUntil(() => baseLimb.collapsed);
+
+        collapsing = false;
+        collapsed = true;
     }
 }
