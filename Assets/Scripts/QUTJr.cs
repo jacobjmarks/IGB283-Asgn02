@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
@@ -35,10 +36,10 @@ public class QUTJr : MonoBehaviour {
     public KeyCode collapse;
 
     [Header("Collapse/Rise")]
-    public float collapseSpeed = 15;
-    public float riseSpeed = 10;
-    private bool collapsing = false;
-    private bool collapsed = false;
+    public float collapseSpeed = 50;
+    public float riseSpeed = 35;
+    public bool transitioning = false;
+    public bool collapsed = false;
 
     private Limb baseLimb;
 
@@ -62,7 +63,7 @@ public class QUTJr : MonoBehaviour {
     private void Update() {
         BoundsCheck();
         UserInput();
-        if (continuousMovement && !jumping) MoveForward();
+        if (continuousMovement && !jumping && !transitioning && !collapsed) MoveForward();
     }
 
     private void OnValidate() {
@@ -77,6 +78,10 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void UserInput() {
+        if (collapsed && !transitioning && AnyKey()) StartCoroutine(Rise());
+
+        if (transitioning || collapsed) return;
+
         if (Input.GetKey(moveLeft) && !jumping && !outOfBoundsLeft) {
             direction = Facing.LEFT;
             if (!continuousMovement) MoveForward();
@@ -92,6 +97,12 @@ public class QUTJr : MonoBehaviour {
         if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
 
         if (Input.GetKey(collapse)) StartCoroutine(Collapse());
+    }
+
+    private bool AnyKey() {
+        return new KeyCode[] { moveLeft, moveRight, jumpInPlace, jumpForward }
+            .Select(key => Input.GetKey(key))
+            .Aggregate((a, b) => a = a || b);
     }
 
     private void MoveForward() {
@@ -154,12 +165,31 @@ public class QUTJr : MonoBehaviour {
     }
 
     private IEnumerator Collapse() {
-        collapsing = true;
+        if (collapsed) yield break;
+        Debug.Log("Collapsing...");
+
+        transitioning = true;
 
         StartCoroutine(baseLimb.Collapse(collapseSpeed));
         yield return new WaitUntil(() => baseLimb.collapsed);
 
-        collapsing = false;
+        transitioning = false;
         collapsed = true;
+        Debug.Log("Collapsed");
     }
+
+    private IEnumerator Rise() {
+        if (!collapsed) yield break;
+        Debug.Log("Rising...");
+
+        transitioning = true;
+
+        StartCoroutine(baseLimb.Rise(riseSpeed));
+        yield return new WaitUntil(() => !baseLimb.collapsed);
+
+        transitioning = false;
+        collapsed = false;
+        Debug.Log("Risen");
+    }
+
 }

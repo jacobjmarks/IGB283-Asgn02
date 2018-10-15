@@ -13,7 +13,8 @@ public class Limb : MonoBehaviour {
     [Header("Joints")]
     public Vector2 selfJoint;
     public Vector2 childJoint;
-    public float startRotation;
+    public float localStartAngle;
+    public float startAngle;
 
     [Header("Collapse")]
     public float collapseAngle = 90;
@@ -27,7 +28,8 @@ public class Limb : MonoBehaviour {
         DrawMesh();
 
         if (child) child.Translate(childJoint);
-        Rotate(startRotation);
+        Rotate(localStartAngle);
+        startAngle = transform.eulerAngles.z;
     }
 
     public void Translate(Vector3 offset) {
@@ -51,9 +53,11 @@ public class Limb : MonoBehaviour {
     }
 
     public IEnumerator Collapse(float speed) {
-        if (child) StartCoroutine(child.Collapse(speed/2));
+        if (collapsed) yield break;
 
-        while (Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle) > 0.1) {
+        if (child) StartCoroutine(child.Collapse(speed / 2));
+
+        while (Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle) > 0.05) {
             Rotate(speed * Time.deltaTime);
             yield return null;
         }
@@ -62,6 +66,19 @@ public class Limb : MonoBehaviour {
         collapsed = true;
     }
 
+    public IEnumerator Rise(float speed) {
+        if (!collapsed) yield break;
+
+        if (child) StartCoroutine(child.Rise(speed / 2));
+
+        while (Mathf.DeltaAngle(startAngle, transform.eulerAngles.z) > 0.05) {
+            Rotate(-speed * Time.deltaTime);
+            yield return null;
+        }
+
+        if (child) yield return new WaitUntil(() => !child.collapsed);
+        collapsed = false;
+    }
 
     private void DrawMesh() {
         gameObject.AddComponent<MeshRenderer>().material = material;
