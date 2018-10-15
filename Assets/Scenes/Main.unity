@@ -482,6 +482,8 @@ MonoBehaviour:
   moveSpeed: 5
   jumpHeight: 1
   jumpDistance: 1.5
+  ascendSpeed: 5
+  descendSpeed: 3
   continuousMovement: 0
   moveLeft: 276
   moveRight: 275

@@ -10,9 +10,11 @@ public class QUTJr : MonoBehaviour {
     private enum Jumping { INPLACE, FORWARD };
 
     [Header("Configuration")]
-    public float moveSpeed;
-    public float jumpHeight;
-    public float jumpDistance;
+    public float moveSpeed = 5;
+    public float jumpHeight = 1;
+    public float jumpDistance = 1.5f;
+    public float ascendSpeed = 5;
+    public float descendSpeed = 3;
     public bool continuousMovement;
 
     [Header("Controls")]
@@ -49,12 +51,12 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void UserInput() {
-        if (Input.GetKey(moveLeft)) {
+        if (Input.GetKey(moveLeft) && !jumping) {
             direction = Facing.LEFT;
             if (!continuousMovement) MoveForward();
         }
 
-        if (Input.GetKey(moveRight)) {
+        if (Input.GetKey(moveRight) && !jumping) {
             direction = Facing.RIGHT;
             if (!continuousMovement) MoveForward();
         }
@@ -71,6 +73,7 @@ public class QUTJr : MonoBehaviour {
     }
 
     private IEnumerator Jump(Jumping type) {
+        if (ascendSpeed == 0 || descendSpeed == 0) yield break;
         jumping = true;
 
         float targetHeight = baseLimb.transform.position.y + jumpHeight;
@@ -81,8 +84,8 @@ public class QUTJr : MonoBehaviour {
 
         // Ascend
         while (!heightReached || !distanceReached) {
-            if (!heightReached) baseLimb.Translate(Vector3.up * Time.deltaTime);
-            if (!distanceReached) baseLimb.Translate(Vector3.right * (int)direction * Time.deltaTime);
+            if (!heightReached) baseLimb.Translate(Vector3.up * ascendSpeed * Time.deltaTime);
+            if (!distanceReached) baseLimb.Translate(Vector3.right * ascendSpeed * (int)direction * Time.deltaTime);
             yield return null;
 
             heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
@@ -95,7 +98,7 @@ public class QUTJr : MonoBehaviour {
             if (heightReached && distanceReached) {
                 // Descend
                 while (baseLimb.transform.position.y > 0) {
-                    baseLimb.Translate(Vector3.down * 1.81f * Time.deltaTime);
+                    baseLimb.Translate(Vector3.down * descendSpeed * Time.deltaTime);
                     yield return null;
                 }
                 // Clamp to 0
