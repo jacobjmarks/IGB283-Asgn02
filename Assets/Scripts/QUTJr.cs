@@ -126,8 +126,8 @@ public class QUTJr : MonoBehaviour {
             yield return null;
 
             // Alter jump conditions based on bounds check
-            heightReached = heightReached || (direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight;
-            distanceReached = distanceReached || (direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight;
+            heightReached = heightReached || ((direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight);
+            distanceReached = distanceReached || ((direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight);
 
             // Alter jump conditions based on target height/distance
             heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
