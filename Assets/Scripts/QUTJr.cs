@@ -38,8 +38,8 @@ public class QUTJr : MonoBehaviour {
     [Header("Collapse/Rise")]
     public float collapseSpeed = 50;
     public float riseSpeed = 35;
-    public bool transitioning = false;
-    public bool collapsed = false;
+    private bool transitioning = false;
+    private bool collapsed = false;
 
     private Limb baseLimb;
 
