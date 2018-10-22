@@ -233,6 +233,7 @@ MonoBehaviour:
   collapse: 279
   collapseSpeed: 50
   riseSpeed: 35
+  riseDelay: 2
 --- !u!4 &383648396
 Transform:
   m_ObjectHideFlags: 0
@@ -301,7 +302,7 @@ MonoBehaviour:
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 0.5}
   localStartAngle: 45
-  collapseAngle: 90
+  collapseAngle: 180
   collapsed: 0
   parent: {fileID: 1356123479}
   child: {fileID: 0}
@@ -526,7 +527,7 @@ MonoBehaviour:
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
   localStartAngle: 45
-  collapseAngle: 75
+  collapseAngle: 120
   collapsed: 0
   parent: {fileID: 922239826}
   child: {fileID: 470384597}

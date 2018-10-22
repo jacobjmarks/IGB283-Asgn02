@@ -30,6 +30,9 @@ public class Limb : MonoBehaviour {
 
         if (child) child.Translate(childJoint);
         Rotate(localStartAngle);
+    }
+
+    private void Start() {
         startAngle = transform.eulerAngles.z;
     }
 
@@ -55,6 +58,8 @@ public class Limb : MonoBehaviour {
 
     public IEnumerator Collapse(float speed) {
         if (collapsed) yield break;
+
+        Debug.Log(string.Format("{0} {1}-{2}", name, transform.eulerAngles.z, collapseAngle));
         
         float dist;
         while ((dist = Mathf.DeltaAngle(transform.eulerAngles.z, collapseAngle)) > 0.05) {
