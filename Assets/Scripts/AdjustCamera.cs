@@ -36,15 +36,10 @@ public class AdjustCamera : MonoBehaviour {
     }
 
     private float GetDesiredZoom() {
-        Vector3 desiredLocalPos = transform.InverseTransformPoint(desiredPosition);
-
         float size = 0;
-
         foreach (QUTJr player in players) {
-            Vector3 targetLocalPos = transform.InverseTransformPoint(player.transform.Find("Base").position);
-            Vector3 desiredPosToTarget = targetLocalPos - desiredLocalPos;
-            size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.y));
-            size = Mathf.Max(size, Mathf.Abs(desiredPosToTarget.x) / cam.aspect);
+            Vector3 distanceFromDesired = player.transform.Find("Base").position - desiredPosition;
+            size = Mathf.Max(size, Mathf.Abs(distanceFromDesired.x) / cam.aspect);
         }
         size += padding;
         
