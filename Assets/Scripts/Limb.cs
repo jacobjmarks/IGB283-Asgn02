@@ -37,12 +37,20 @@ public class Limb : MonoBehaviour {
         startAngle = transform.eulerAngles.z;
     }
 
+    /// <summary>
+    /// Move the limb (and its child) by the given offset.
+    /// </summary>
+    /// <param name="offset">Delta vector to offset by.</param>
     public void Translate(Vector3 offset) {
         transform.position += offset;
 
         if (child) child.Translate(offset);
     }
 
+    /// <summary>
+    /// Rotate the limb (and its child) by the given angle.
+    /// </summary>
+    /// <param name="angle">Angle to rotate.</param>
     public void Rotate(float angle) {
         transform.Rotate(Vector3.forward, angle);
 
@@ -52,11 +60,19 @@ public class Limb : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Horizontally flip the limb (and its child) with respect to the central Base limb.
+    /// </summary>
     public void Flip() {
         transform.RotateAround(new Vector2(transform.parent.Find("Base").transform.position.x, transform.position.y), Vector3.up, 180);
         if (child) child.Flip();
     }
 
+    /// <summary>
+    /// Transition the limb (and its child) into its collapsed state.
+    /// The limb will enter the collapsed state when its child has done so.
+    /// </summary>
+    /// <param name="speed">Speed at which to transition.</param>
     public IEnumerator Collapse(float speed) {
         if (collapsed) yield break;
         
@@ -72,6 +88,11 @@ public class Limb : MonoBehaviour {
         collapsed = true;
     }
 
+    /// <summary>
+    /// Transition the limb (and its child) into its risen/original state.
+    /// The limb will enter the risen/original state when its child has done so.
+    /// </summary>
+    /// <param name="speed">Speed at which to transition.</param>
     public IEnumerator Rise(float speed) {
         if (!collapsed) yield break;
 
@@ -86,6 +107,9 @@ public class Limb : MonoBehaviour {
         collapsed = false;
     }
 
+    /// <summary>
+    /// Create and draw the mesh for the limb.
+    /// </summary>
     private void DrawMesh() {
         gameObject.AddComponent<MeshRenderer>().material = material;
         Mesh mesh = gameObject.AddComponent<MeshFilter>().mesh;

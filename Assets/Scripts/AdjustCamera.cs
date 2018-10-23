@@ -31,10 +31,18 @@ public class AdjustCamera : MonoBehaviour {
         cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, GetDesiredZoom(), ref zoomSpeed, 0.2f);
     }
 
+    /// <summary>
+    /// Get the average X position of all players.
+    /// </summary>
+    /// <returns>The average X position of all players.</returns>
     private float GetAveragePlayerX() {
         return players.Select(p => p.transform.Find("Base").position.x).Aggregate((a, b) => a + b) / players.Count;
     }
 
+    /// <summary>
+    /// Calculate the desired orthographic size of the camera, such that all players will be visible on the screen.
+    /// </summary>
+    /// <returns>The optimal orthographic camera size.</returns>
     private float GetDesiredZoom() {
         float size = 0;
         foreach (QUTJr player in players) {

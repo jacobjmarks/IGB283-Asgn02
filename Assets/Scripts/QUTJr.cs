@@ -75,6 +75,9 @@ public class QUTJr : MonoBehaviour {
         while (avgAirspeedVelocity < 1) avgAirspeedVelocity++;
     }
 
+    /// <summary>
+    /// Check for user input and act accordingly.
+    /// </summary>
     private void UserInput() {
         // Rise after collapse
         if (collapsed && !transitioning && AnyMovementKey()) StartCoroutine(Rise());
@@ -104,16 +107,27 @@ public class QUTJr : MonoBehaviour {
         if (Input.GetKey(collapse)) StartCoroutine(Collapse());
     }
 
+    /// <summary>
+    /// Check if any movement key is being pressed.
+    /// </summary>
+    /// <returns>True if any movement key is being pressed.</returns>
     private bool AnyMovementKey() {
         return new KeyCode[] { moveLeft, moveRight, jumpInPlace, jumpForward }
             .Select(keyCode => Input.GetKey(keyCode))
             .Aggregate((a, b) => a || b);
     }
 
+    /// <summary>
+    /// Move the bot forward in the current direction it is facing.
+    /// </summary>
     private void MoveForward() {
         baseLimb.Translate(new Vector3(moveSpeed * (int)direction * Time.deltaTime, 0, 0));
     }
 
+    /// <summary>
+    /// Make the bot jump.
+    /// </summary>
+    /// <param name="type">The type of jump to perform.</param>
     private IEnumerator Jump(Jumping type) {
         jumping = true;
 
@@ -148,6 +162,9 @@ public class QUTJr : MonoBehaviour {
         jumping = false;
     }
 
+    /// <summary>
+    /// Make the bot collapse if it has not already.
+    /// </summary>
     private IEnumerator Collapse() {
         if (collapsed) yield break;
 
@@ -160,6 +177,9 @@ public class QUTJr : MonoBehaviour {
         collapsed = true;
     }
 
+    /// <summary>
+    /// Make the bot rise if collapsed.
+    /// </summary>
     private IEnumerator Rise() {
         if (!collapsed) yield break;
 
