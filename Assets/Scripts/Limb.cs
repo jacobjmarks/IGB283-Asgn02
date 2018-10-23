@@ -8,7 +8,7 @@ public class Limb : MonoBehaviour {
     public float width;
     public float height;
     public Material material;
-    public Color color;
+    private Color color;
 
     [Header("Joints")]
     public Vector2 selfJoint;
@@ -26,6 +26,7 @@ public class Limb : MonoBehaviour {
     public Limb child;
     
     private void Awake() {
+        color = GetComponentInParent<QUTJr>().color;
         DrawMesh();
 
         if (child) child.Translate(childJoint);

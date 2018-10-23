@@ -10,6 +10,9 @@ public class QUTJr : MonoBehaviour {
     private enum Facing { LEFT = -1, RIGHT = 1 };
     private enum Jumping { INPLACE, FORWARD };
 
+    [Header("Display")]
+    public Color color;
+
     [Header("Movement")]
     public float moveSpeed = 5;
     public bool continuousMovement;
@@ -55,7 +58,6 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void Update() {
-        //BoundsCheck();
         UserInput();
         if (continuousMovement && !jumping && !transitioning && !collapsed) MoveForward();
     }

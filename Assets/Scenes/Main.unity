@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be856054ca83c654e99834d6b82a237c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0.8002434, b: 1, a: 1}
   moveSpeed: 4
   continuousMovement: 0
   jumpHeight: 1
@@ -224,14 +225,13 @@ MonoBehaviour:
   ascendSpeed: 5
   descendSpeed: 3
   avgAirspeedVelocity: 6
-  moveLeft: 276
-  moveRight: 275
-  jumpInPlace: 273
-  jumpForward: 274
-  collapse: 279
+  moveLeft: 97
+  moveRight: 100
+  jumpInPlace: 119
+  jumpForward: 115
+  collapse: 122
   collapseSpeed: 50
   riseSpeed: 35
-  riseDelay: 2
 --- !u!4 &383648396
 Transform:
   m_ObjectHideFlags: 0
@@ -296,7 +296,6 @@ MonoBehaviour:
   width: 0.25
   height: 0.5
   material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 0.5}
   localStartAngle: 45
@@ -427,7 +426,6 @@ MonoBehaviour:
   width: 1
   height: 0.25
   material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.5, y: 0}
   childJoint: {x: 0.5, y: 0.25}
   localStartAngle: 0
@@ -481,7 +479,6 @@ MonoBehaviour:
   width: 0.25
   height: 1
   material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
   localStartAngle: 0
@@ -535,7 +532,6 @@ MonoBehaviour:
   width: 0.25
   height: 1
   material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.61685514, b: 1, a: 1}
   selfJoint: {x: 0.1125, y: 0}
   childJoint: {x: 0.1125, y: 1}
   localStartAngle: 45
