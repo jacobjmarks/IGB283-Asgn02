@@ -13,13 +13,7 @@ public class QUTJr : MonoBehaviour {
     [Header("Movement")]
     public float moveSpeed = 5;
     public bool continuousMovement;
-
-    //[Header("Movement Bounds")]
-    //public float xFrom = -5;
-    //public float xTo = 5;
-    private bool outOfBoundsLeft = false;
-    private bool outOfBoundsRight = false;
-
+    
     [Header("Jumping")]
     public float jumpHeight = 1;
     public float jumpDistance = 1.5f;
@@ -72,21 +66,17 @@ public class QUTJr : MonoBehaviour {
         while (ascendSpeed < 1) ascendSpeed++;
         while (descendSpeed < 1) descendSpeed++;
         while (avgAirspeedVelocity < 1) avgAirspeedVelocity++;
-
-        // Ensure movement bounds are within reasonable values
-        //while (xFrom > -1) xFrom--;
-        //while (xTo < 1) xTo++;
     }
 
     private void UserInput() {
         if (transitioning || collapsed) return;
 
-        if (Input.GetKey(moveLeft) && !jumping && !outOfBoundsLeft) {
+        if (Input.GetKey(moveLeft) && !jumping) {
             direction = Facing.LEFT;
             if (!continuousMovement) MoveForward();
         }
 
-        if (Input.GetKey(moveRight) && !jumping && !outOfBoundsRight) {
+        if (Input.GetKey(moveRight) && !jumping) {
             direction = Facing.RIGHT;
             if (!continuousMovement) MoveForward();
         }
@@ -103,7 +93,6 @@ public class QUTJr : MonoBehaviour {
     }
 
     private IEnumerator Jump(Jumping type) {
-        if ((direction == Facing.LEFT && outOfBoundsLeft) || (direction == Facing.RIGHT && outOfBoundsRight)) yield break;
         jumping = true;
 
         float targetHeight = baseLimb.transform.position.y + jumpHeight;
@@ -117,10 +106,6 @@ public class QUTJr : MonoBehaviour {
             if (!heightReached) baseLimb.Translate(Vector3.up * ascendSpeed * Time.deltaTime);
             if (!distanceReached) baseLimb.Translate(Vector3.right * avgAirspeedVelocity * (int)direction * Time.deltaTime);
             yield return null;
-
-            // Alter jump conditions based on bounds check
-            heightReached = heightReached || ((direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight);
-            distanceReached = distanceReached || ((direction == Facing.LEFT) ? outOfBoundsLeft : outOfBoundsRight);
 
             // Alter jump conditions based on target height/distance
             heightReached = heightReached || baseLimb.transform.position.y >= targetHeight;
@@ -140,22 +125,6 @@ public class QUTJr : MonoBehaviour {
         baseLimb.transform.position.Set(transform.position.x, 0, transform.position.z);
         jumping = false;
     }
-
-    //private void BoundsCheck() {
-    //    if (baseLimb.transform.position.x <= xFrom) {
-    //        outOfBoundsLeft = true;
-    //        if (continuousMovement && !jumping) direction = Facing.RIGHT;
-    //    } else {
-    //        outOfBoundsLeft = false;
-    //    }
-
-    //    if (baseLimb.transform.position.x >= xTo) {
-    //        outOfBoundsRight = true;
-    //        if (continuousMovement && !jumping) direction = Facing.LEFT;
-    //    } else {
-    //        outOfBoundsRight = false;
-    //    }
-    //}
 
     private IEnumerator Collapse() {
         if (collapsed) yield break;
