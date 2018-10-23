@@ -36,6 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4828081801111282}
   - component: {fileID: 114174448080104282}
+  - component: {fileID: 114864576195669050}
   m_Layer: 0
   m_Name: Wrist
   m_TagString: Untagged
@@ -244,6 +245,19 @@ MonoBehaviour:
   collapsed: 0
   parent: {fileID: 114054261707865752}
   child: {fileID: 114048381465816762}
+--- !u!114 &114864576195669050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1281967781357882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c47f9b0c592ec4797a4c8f48769324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 45
+  speed: 4
 --- !u!114 &114955755410175394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,12 +271,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 1, g: 0, b: 0.9208169, a: 1}
   moveSpeed: 4
-  continuousMovement: 0
+  continuousMove: 0
   jumpHeight: 1
   jumpDistance: 2
   ascendSpeed: 5
   descendSpeed: 3
   avgAirspeedVelocity: 6
+  continousJump: 0
   moveLeft: 0
   moveRight: 0
   jumpInPlace: 0

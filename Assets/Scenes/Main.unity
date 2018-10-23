@@ -458,6 +458,11 @@ Prefab:
       propertyPath: collapse
       value: 279
       objectReference: {fileID: 0}
+    - target: {fileID: 114955755410175394, guid: bfd299558a4ca194eb12e1ca72926ea3,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfd299558a4ca194eb12e1ca72926ea3, type: 2}
   m_IsPrefabAsset: 0
