@@ -14,9 +14,9 @@ public class QUTJr : MonoBehaviour {
     public float moveSpeed = 5;
     public bool continuousMovement;
 
-    [Header("Movement Bounds")]
-    public float xFrom = -5;
-    public float xTo = 5;
+    //[Header("Movement Bounds")]
+    //public float xFrom = -5;
+    //public float xTo = 5;
     private bool outOfBoundsLeft = false;
     private bool outOfBoundsRight = false;
 
@@ -62,7 +62,7 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void Update() {
-        BoundsCheck();
+        //BoundsCheck();
         UserInput();
         if (continuousMovement && !jumping && !transitioning && !collapsed) MoveForward();
     }
@@ -74,8 +74,8 @@ public class QUTJr : MonoBehaviour {
         while (avgAirspeedVelocity < 1) avgAirspeedVelocity++;
 
         // Ensure movement bounds are within reasonable values
-        while (xFrom > -1) xFrom--;
-        while (xTo < 1) xTo++;
+        //while (xFrom > -1) xFrom--;
+        //while (xTo < 1) xTo++;
     }
 
     private void UserInput() {
@@ -141,21 +141,21 @@ public class QUTJr : MonoBehaviour {
         jumping = false;
     }
 
-    private void BoundsCheck() {
-        if (baseLimb.transform.position.x <= xFrom) {
-            outOfBoundsLeft = true;
-            if (continuousMovement && !jumping) direction = Facing.RIGHT;
-        } else {
-            outOfBoundsLeft = false;
-        }
+    //private void BoundsCheck() {
+    //    if (baseLimb.transform.position.x <= xFrom) {
+    //        outOfBoundsLeft = true;
+    //        if (continuousMovement && !jumping) direction = Facing.RIGHT;
+    //    } else {
+    //        outOfBoundsLeft = false;
+    //    }
 
-        if (baseLimb.transform.position.x >= xTo) {
-            outOfBoundsRight = true;
-            if (continuousMovement && !jumping) direction = Facing.LEFT;
-        } else {
-            outOfBoundsRight = false;
-        }
-    }
+    //    if (baseLimb.transform.position.x >= xTo) {
+    //        outOfBoundsRight = true;
+    //        if (continuousMovement && !jumping) direction = Facing.LEFT;
+    //    } else {
+    //        outOfBoundsRight = false;
+    //    }
+    //}
 
     private IEnumerator Collapse() {
         if (collapsed) yield break;
