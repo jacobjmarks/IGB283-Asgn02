@@ -15,7 +15,7 @@ public class QUTJr : MonoBehaviour {
 
     [Header("Movement")]
     public float moveSpeed = 5;
-    public bool continuousMovement;
+    public bool continuousMove;
     
     [Header("Jumping")]
     public float jumpHeight = 1;
@@ -23,6 +23,8 @@ public class QUTJr : MonoBehaviour {
     public float ascendSpeed = 5;
     public float descendSpeed = 3;
     public float avgAirspeedVelocity = 3;
+    public enum ContJumpType { None, InPlace, Forward };
+    public ContJumpType continousJump;
     private bool jumping = false;
 
     [Header("Controls")]
@@ -59,7 +61,11 @@ public class QUTJr : MonoBehaviour {
 
     private void Update() {
         UserInput();
-        if (continuousMovement && !jumping && !transitioning && !collapsed) MoveForward();
+
+        // Continuous actions
+        if (continuousMove && !jumping && !transitioning && !collapsed) MoveForward();
+        if (continousJump == ContJumpType.InPlace && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
+        if (continousJump == ContJumpType.Forward && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
     }
 
     private void OnValidate() {
@@ -70,24 +76,31 @@ public class QUTJr : MonoBehaviour {
     }
 
     private void UserInput() {
+        // Rise after collapse
         if (collapsed && !transitioning && AnyMovementKey()) StartCoroutine(Rise());
 
         if (transitioning || collapsed) return;
 
-        if (Input.GetKey(moveLeft) && !jumping) {
-            direction = Facing.LEFT;
-            if (!continuousMovement) MoveForward();
+        // Movement
+        if (!continuousMove) {
+            if (Input.GetKey(moveLeft) && !jumping) {
+                direction = Facing.LEFT;
+                MoveForward();
+            }
+
+            if (Input.GetKey(moveRight) && !jumping) {
+                direction = Facing.RIGHT;
+                MoveForward();
+            }
         }
 
-        if (Input.GetKey(moveRight) && !jumping) {
-            direction = Facing.RIGHT;
-            if (!continuousMovement) MoveForward();
+        // Jumping
+        if (continousJump == ContJumpType.None) {
+            if (Input.GetKey(jumpInPlace) && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
+            if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
         }
 
-        if (Input.GetKey(jumpInPlace) && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
-
-        if (Input.GetKey(jumpForward) && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
-
+        // Collapse
         if (Input.GetKey(collapse)) StartCoroutine(Collapse());
     }
 
