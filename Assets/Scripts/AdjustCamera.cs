@@ -26,9 +26,9 @@ public class AdjustCamera : MonoBehaviour {
         desiredPosition = new Vector3(GetAveragePlayerX(), transform.position.y, transform.position.z);
 
         // Move
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, 0.2f);
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, dampTime);
         // Zoom
-        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, GetDesiredZoom(), ref zoomSpeed, 0.2f);
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, GetDesiredZoom(), ref zoomSpeed, dampTime);
     }
 
     /// <summary>
