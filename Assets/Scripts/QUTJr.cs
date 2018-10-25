@@ -68,8 +68,8 @@ public class QUTJr : MonoBehaviour {
         if (continousJump == ContJumpType.Forward && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
 
         // Disabled limb wobble during collapse/rise
-        foreach (LimbWobble script in GetComponentsInChildren<LimbWobble>()) {
-            script.enabled = !(transitioning || collapsed);
+        foreach (LimbWobble limbWobble in GetComponentsInChildren<LimbWobble>()) {
+            limbWobble.wobble = !(transitioning || collapsed);
         }
     }
 

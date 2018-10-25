@@ -6,6 +6,8 @@ public class LimbWobble : MonoBehaviour {
 
     public float angle;
     public float speed;
+    [HideInInspector]
+    public bool wobble = true;
 
     private Limb limb;
     private float startAngle;
@@ -16,6 +18,7 @@ public class LimbWobble : MonoBehaviour {
     }
 
     private void Update() {
+        if (!wobble) return;
         float newAngle = startAngle + Mathf.Sin(speed * Time.realtimeSinceStartup) * angle/2;
         limb.Rotate(newAngle - transform.eulerAngles.z);
     }
