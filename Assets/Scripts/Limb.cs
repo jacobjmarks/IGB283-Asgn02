@@ -22,7 +22,7 @@ public class Limb : MonoBehaviour {
     public bool collapsed = false;
 
     [Header("Tree")]
-    public Limb parent;
+    //public Limb parent;
     public Limb child;
     
     private void Awake() {
