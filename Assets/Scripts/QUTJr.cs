@@ -66,6 +66,11 @@ public class QUTJr : MonoBehaviour {
         if (continuousMove && !jumping && !transitioning && !collapsed) MoveForward();
         if (continousJump == ContJumpType.InPlace && !jumping) StartCoroutine(Jump(Jumping.INPLACE));
         if (continousJump == ContJumpType.Forward && !jumping) StartCoroutine(Jump(Jumping.FORWARD));
+
+        // Disabled limb wobble during collapse/rise
+        foreach (LimbWobble script in GetComponentsInChildren<LimbWobble>()) {
+            script.enabled = !(transitioning || collapsed);
+        }
     }
 
     private void OnValidate() {
