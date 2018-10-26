@@ -90,16 +90,14 @@ public class QUTJr : MonoBehaviour {
         if (transitioning || collapsed) return;
 
         // Movement
-        if (!continuousMove) {
-            if (Input.GetKey(moveLeft) && !jumping) {
-                direction = Facing.LEFT;
-                MoveForward();
-            }
+        if (Input.GetKey(moveLeft) && !jumping) {
+            direction = Facing.LEFT;
+            if (!continuousMove) MoveForward();
+        }
 
-            if (Input.GetKey(moveRight) && !jumping) {
-                direction = Facing.RIGHT;
-                MoveForward();
-            }
+        if (Input.GetKey(moveRight) && !jumping) {
+            direction = Facing.RIGHT;
+            if (!continuousMove) MoveForward();
         }
 
         // Jumping
